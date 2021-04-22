@@ -65,6 +65,16 @@ export class Skier extends Entity {
         this.y -= Constants.SKIER_STARTING_SPEED;
     }
 
+    jump(ramp = false) {
+        let currentDirection = this.direction;
+        let jumpDirection = ramp ? 7 : 6;
+        this.setDirection(jumpDirection);
+
+        setTimeout(() => {
+            this.setDirection(currentDirection);
+        }, 100);
+    }
+
     turnLeft() {
         if (this.direction === Constants.SKIER_DIRECTIONS.LEFT) {
             this.moveSkierLeft();
@@ -108,7 +118,9 @@ export class Skier extends Entity {
             this.y - asset.height / 4
         );
 
+        let obstacleName = '';
         const collision = obstacleManager.getObstacles().find((obstacle) => {
+            obstacleName = obstacle.getAssetName();
             const obstacleAsset = assetManager.getAsset(obstacle.getAssetName());
             const obstaclePosition = obstacle.getPosition();
             const obstacleBounds = new Rect(
@@ -122,6 +134,7 @@ export class Skier extends Entity {
         });
 
         if (collision) {
+            console.log({obstacleName});
             this.setDirection(Constants.SKIER_DIRECTIONS.CRASH);
         }
     };
