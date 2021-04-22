@@ -12,17 +12,21 @@ export class Skier extends Entity {
         super(x, y);
     }
 
+    getAssetName() {
+        return this.assetName;
+    }
+
     setDirection(direction) {
         this.direction = direction;
         this.updateAsset();
     }
 
     updateAsset() {
-        this.assetName = Constants.SKIER_DIRECTION_ASSET[this.direction];
+        this.assetName = Constants.SKIER_DIRECTION_ASSET[this.direction] || this.assetName;
     }
 
     move() {
-        switch(this.direction) {
+        switch (this.direction) {
             case Constants.SKIER_DIRECTIONS.LEFT_DOWN:
                 this.moveSkierLeftDown();
                 break;
@@ -62,8 +66,11 @@ export class Skier extends Entity {
     }
 
     turnLeft() {
-        if(this.direction === Constants.SKIER_DIRECTIONS.LEFT) {
+        if (this.direction === Constants.SKIER_DIRECTIONS.LEFT) {
             this.moveSkierLeft();
+        }
+        else if (this.direction === 0) {
+            this.setDirection(2);
         }
         else {
             this.setDirection(this.direction - 1);
@@ -71,8 +78,11 @@ export class Skier extends Entity {
     }
 
     turnRight() {
-        if(this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
+        if (this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
             this.moveSkierRight();
+        }
+        else if (this.direction === 0) {
+            this.setDirection(4);
         }
         else {
             this.setDirection(this.direction + 1);
@@ -80,7 +90,7 @@ export class Skier extends Entity {
     }
 
     turnUp() {
-        if(this.direction === Constants.SKIER_DIRECTIONS.LEFT || this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
+        if (this.direction === Constants.SKIER_DIRECTIONS.LEFT || this.direction === Constants.SKIER_DIRECTIONS.RIGHT) {
             this.moveSkierUp();
         }
     }
@@ -111,7 +121,7 @@ export class Skier extends Entity {
             return intersectTwoRects(skierBounds, obstacleBounds);
         });
 
-        if(collision) {
+        if (collision) {
             this.setDirection(Constants.SKIER_DIRECTIONS.CRASH);
         }
     };
