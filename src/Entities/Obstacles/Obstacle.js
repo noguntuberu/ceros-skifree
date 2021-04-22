@@ -5,8 +5,9 @@ import { randomInt } from '../../Core/Utils';
 const assetTypes = [
     Constants.TREE,
     Constants.TREE_CLUSTER,
+    Constants.RAMP,
     Constants.ROCK1,
-    Constants.ROCK2
+    Constants.ROCK2,
 ];
 
 export class Obstacle extends Entity {
