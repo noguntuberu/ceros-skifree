@@ -4,10 +4,11 @@ import { Canvas } from './Canvas';
 import { Skier } from "../Entities/Skier";
 import { Rhino } from "../Entities/Rhino";
 import { ObstacleManager } from "../Entities/Obstacles/ObstacleManager";
-import { Rect } from './Utils';
+import { createSplash, hideSplash, Rect } from './Utils';
 
 export class Game {
     gameWindow = null;
+    gameIsPaused = false;
 
     constructor() {
         this.assetManager = new AssetManager();
@@ -42,7 +43,10 @@ export class Game {
 
             setTimeout(() => {
                 this.rhino.move(this.assetManager).then(isCaught => {
-                    if (isCaught) this.skier.setIsCaught();
+                    if (isCaught) {
+                        this.skier.setIsCaught();
+                        createSplash();
+                    }
                 });
             }, 2000)
             
@@ -61,12 +65,13 @@ export class Game {
         this.canvas.setDrawOffset(this.gameWindow.left, this.gameWindow.top);
         
         this.skier.draw(this.canvas, this.assetManager);
-        // setTimeout(() => {
-            this.rhino.draw(this.canvas, this.assetManager);
-        // }, 2000);
-
+        this.rhino.draw(this.canvas, this.assetManager);
 
         this.obstacleManager.drawObstacles(this.canvas, this.assetManager);
+    }
+
+    endGame() {
+        createSplash();
     }
 
     calculateGameWindow() {
@@ -78,6 +83,19 @@ export class Game {
     }
 
     handleKeyDown(event) {
+        if (event.which === Constants.KEYS.PAUSE) {
+            this.gameIsPaused = !this.gameIsPaused;
+            this.skier.pause(this.gameIsPaused);
+            this.rhino.pause(this.gameIsPaused);
+            
+            if (this.gameIsPaused) {
+                createSplash(true);
+                return;
+            };
+
+            hideSplash();
+        }
+
         switch (event.which) {
             case Constants.KEYS.LEFT:
                 this.skier.turnLeft();
@@ -87,7 +105,7 @@ export class Game {
                 break;
             case Constants.KEYS.UP:
                 this.skier.turnUp();
-                break;
+                break; 
             case Constants.KEYS.DOWN:
                 this.skier.turnDown();
                 break;

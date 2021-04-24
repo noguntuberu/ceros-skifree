@@ -7,6 +7,7 @@ export class Skier extends Entity {
 
     direction = Constants.SKIER_DIRECTIONS.DOWN;
     isCaught = false;
+    isPaused = false;
     speed = Constants.SKIER_STARTING_SPEED;
     
 
@@ -27,8 +28,12 @@ export class Skier extends Entity {
         this.assetName = Constants.SKIER_DIRECTION_ASSET[this.direction] || this.assetName;
     }
 
+    pause(isPaused) {
+        this.isPaused = isPaused;
+    }
+
     move() {
-        if (this.isCaught) return;
+        if (this.isCaught || this.isPaused) return;
 
         switch (this.direction) {
             case Constants.SKIER_DIRECTIONS.LEFT_DOWN:

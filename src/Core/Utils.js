@@ -1,3 +1,8 @@
+/** */
+export async function delay(seconds = 0) {
+    return await new Promise((resolve, reject) => setTimeout(resolve, (seconds * 1000)));
+}
+
 export function randomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -9,6 +14,45 @@ export function intersectTwoRects(rect1, rect2) {
         rect2.right < rect1.left ||
         rect2.top > rect1.bottom ||
         rect2.bottom < rect1.top);
+}
+
+export function createSplash(isPause = false) {
+    let documentBody = document.body;
+    let veil = document.createElement('div');
+    veil.classList.add('splash-veil');
+
+    let wrapper = document.createElement('div');
+    wrapper.classList.add("splash-wrapper");
+
+    let splashHeader = document.createElement('h3');
+    splashHeader.classList.add("splash-title");
+    wrapper.appendChild(splashHeader);
+
+    if (isPause) {
+        splashHeader.textContent = "Game Paused";
+
+        let pauseText = document.createElement('p');
+        pauseText.textContent = "** Press Space to continue **";
+
+        wrapper.appendChild(pauseText);
+    } else {
+        splashHeader.textContent = "GAME OVER";
+
+        let retryButtom = document.createElement("button");
+        retryButtom.textContent = "RESET GAME";
+        retryButtom.classList.add("retry-btn");
+        retryButtom.addEventListener('click', () => location.reload(), { once: true });
+
+        wrapper.appendChild(retryButtom);
+    }
+
+    veil.appendChild(wrapper);
+    documentBody.appendChild(veil);
+}
+
+export function hideSplash() {
+    let veil = document.querySelector(".splash-veil");
+    veil.remove();
 }
 
 export class Rect {

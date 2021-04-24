@@ -1,10 +1,11 @@
 /** */
 import * as Constants from "../Constants";
 import { Entity } from "./Entity";
-import { intersectTwoRects, Rect } from "../Core/Utils";
+import { delay, intersectTwoRects, Rect } from "../Core/Utils";
 
 export class Rhino extends Entity {
     assetName = Constants.RHINO;
+    isPaused = false;
     skier = null;
     skierIsCaught = false;
     speed = Constants.SKIER_STARTING_SPEED;
@@ -35,21 +36,19 @@ export class Rhino extends Entity {
         return intersectTwoRects(skierBounds, rhinoBounds);
     }
 
-    async delay(seconds) {
-        return await new Promise((resolve, reject) => setTimeout(resolve, (seconds * 1000)));
-    }
-
     async eatSkier() {
         this.updateAsset(Constants.RHINO_MOUTH_OPEN);
-        await this.delay(0.75);
+        await delay(0.75);
         this.updateAsset(Constants.RHINO_EAT_ONE);
-        await this.delay(0.75);
+        await delay(0.75);
         this.updateAsset(Constants.RHINO_EAT_TWO);
-        await this.delay(0.75);
+        await delay(0.75);
         this.updateAsset(Constants.RHINO_EAT_DONE);
     }
 
     async move(assetManager) {
+        if(this.isPaused) return;
+        
         let { x, y } = this.skier.getPosition();
         if (!this.skierIsCaught && this.checkIfSkierIsCaught({ x, y }, assetManager)) {
             this.skierIsCaught = true;
@@ -103,6 +102,10 @@ export class Rhino extends Entity {
 
     moveRight() {
         this.x += (Constants.SKIER_STARTING_SPEED / 2);
+    }
+
+    pause(isPaused) {
+        this.isPaused = isPaused;
     }
 
     updateAsset(name) {
