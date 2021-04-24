@@ -6,14 +6,12 @@ export class Skier extends Entity {
     assetName = Constants.SKIER_DOWN;
 
     direction = Constants.SKIER_DIRECTIONS.DOWN;
+    isCaught = false;
     speed = Constants.SKIER_STARTING_SPEED;
+    
 
     constructor(x, y) {
         super(x, y);
-    }
-
-    getAssetName() {
-        return this.assetName;
     }
 
     setDirection(direction) {
@@ -21,15 +19,22 @@ export class Skier extends Entity {
         this.updateAsset();
     }
 
+    setIsCaught() {
+        this.isCaught = true;
+    }
+
     updateAsset() {
         this.assetName = Constants.SKIER_DIRECTION_ASSET[this.direction] || this.assetName;
     }
 
     move() {
+        if (this.isCaught) return;
+
         switch (this.direction) {
             case Constants.SKIER_DIRECTIONS.LEFT_DOWN:
                 this.moveSkierLeftDown();
                 break;
+            case Constants.SKIER_DIRECTIONS.JUMP:
             case Constants.SKIER_DIRECTIONS.DOWN:
                 this.moveSkierDown();
                 break;
@@ -65,14 +70,12 @@ export class Skier extends Entity {
         this.y -= Constants.SKIER_STARTING_SPEED;
     }
 
-    jump(ramp = false) {
-        let currentDirection = this.direction;
-        let jumpDirection = ramp ? 7 : 6;
-        this.setDirection(jumpDirection);
+    jump() {
+        this.setDirection(Constants.SKIER_DIRECTIONS.JUMP);
 
         setTimeout(() => {
-            this.setDirection(currentDirection);
-        }, 100);
+            this.setDirection(Constants.SKIER_DIRECTIONS.DOWN);
+        }, 250);
     }
 
     turnLeft() {
@@ -133,9 +136,19 @@ export class Skier extends Entity {
             return intersectTwoRects(skierBounds, obstacleBounds);
         });
 
+
         if (collision) {
-            console.log({obstacleName});
-            this.setDirection(Constants.SKIER_DIRECTIONS.CRASH);
+            if (obstacleName === Constants.RAMP) {
+                if (this.direction === Constants.SKIER_DIRECTIONS.JUMP) return; // included to prevent multiple
+                this.jump();
+                //refactor
+            } else if ((obstacleName === Constants.ROCK1 || obstacleName === Constants.ROCK2) && this.direction === Constants.SKIER_DIRECTIONS.JUMP) {
+                return;
+            } else {
+                this.setDirection(Constants.SKIER_DIRECTIONS.CRASH);
+            }
         }
+
+        return { collision, obstacleName };
     };
 }
