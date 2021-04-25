@@ -4,10 +4,11 @@ import { Canvas } from './Canvas';
 import { Skier } from "../Entities/Skier";
 import { Rhino } from "../Entities/Rhino";
 import { ObstacleManager } from "../Entities/Obstacles/ObstacleManager";
-import { createSplash, hideSplash, Rect } from './Utils';
+import { createSplashScreen, hideSplashScreen, Rect } from './Utils';
 
 export class Game {
     gameWindow = null;
+    gameIsOver = false;
     gameIsPaused = false;
 
     constructor() {
@@ -45,6 +46,7 @@ export class Game {
                 this.rhino.move(this.assetManager).then(isCaught => {
                     if (isCaught) {
                         this.skier.setIsCaught();
+                        this.gameIsOver = true;
                         createSplash();
                     }
                 });
@@ -71,7 +73,7 @@ export class Game {
     }
 
     endGame() {
-        createSplash();
+        createSplashScreen();
     }
 
     calculateGameWindow() {
@@ -83,17 +85,19 @@ export class Game {
     }
 
     handleKeyDown(event) {
+        if (this.gameIsOver) return;
+
         if (event.which === Constants.KEYS.PAUSE) {
             this.gameIsPaused = !this.gameIsPaused;
             this.skier.pause(this.gameIsPaused);
             this.rhino.pause(this.gameIsPaused);
 
             if (this.gameIsPaused) {
-                createSplash(true);
+                createSplashScreen(true);
                 return;
             };
 
-            hideSplash();
+            hideSplashScreen();
         }
 
         switch (event.which) {

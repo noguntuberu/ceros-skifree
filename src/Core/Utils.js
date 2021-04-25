@@ -16,7 +16,7 @@ export function intersectTwoRects(rect1, rect2) {
         rect2.bottom < rect1.top);
 }
 
-export function createSplash(isPause = false) {
+export function createSplashScreen(isPause = false) {
     let documentBody = document.body;
     let veil = document.createElement('div');
     veil.classList.add('splash-veil');
@@ -50,7 +50,7 @@ export function createSplash(isPause = false) {
     documentBody.appendChild(veil);
 }
 
-export function hideSplash() {
+export function hideSplashScreen() {
     let veil = document.querySelector(".splash-veil");
     veil.remove();
 }

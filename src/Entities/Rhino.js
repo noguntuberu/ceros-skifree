@@ -87,8 +87,8 @@ export class Rhino extends Entity {
     }
 
     moveLeftDown() {
-        this.x -= this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER;
-        this.y += this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER;
+        this.x -= (this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER) / 2;
+        this.y += (this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER) / 2;
     }
 
     moveDown() {
@@ -96,8 +96,8 @@ export class Rhino extends Entity {
     }
 
     moveRightDown() {
-        this.x += this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER;
-        this.y += this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER;
+        this.x += (this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER) / 2;
+        this.y += (this.speed / Constants.SKIER_DIAGONAL_SPEED_REDUCER) / 2;
     }
 
     moveRight() {
