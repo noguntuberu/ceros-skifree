@@ -9,7 +9,7 @@ export class Skier extends Entity {
     isCaught = false;
     isPaused = false;
     speed = Constants.SKIER_STARTING_SPEED;
-    
+
 
     constructor(x, y) {
         super(x, y);
@@ -117,6 +117,10 @@ export class Skier extends Entity {
         this.setDirection(Constants.SKIER_DIRECTIONS.DOWN);
     }
 
+    checkIfObstacleIsJumpable(obstacleName) {
+        return (obstacleName === Constants.ROCK1 || obstacleName === Constants.ROCK2) && this.direction === Constants.SKIER_DIRECTIONS.JUMP;
+    }
+
     checkIfSkierHitObstacle(obstacleManager, assetManager) {
         const asset = assetManager.getAsset(this.assetName);
         const skierBounds = new Rect(
@@ -144,10 +148,11 @@ export class Skier extends Entity {
 
         if (collision) {
             if (obstacleName === Constants.RAMP) {
-                if (this.direction === Constants.SKIER_DIRECTIONS.JUMP) return; // included to prevent multiple
+                if (this.direction === Constants.SKIER_DIRECTIONS.JUMP) {
+                    return;
+                } // included to prevent multiple jump updations
                 this.jump();
-                //refactor
-            } else if ((obstacleName === Constants.ROCK1 || obstacleName === Constants.ROCK2) && this.direction === Constants.SKIER_DIRECTIONS.JUMP) {
+            } else if (this.checkIfObstacleIsJumpable()) {
                 return;
             } else {
                 this.setDirection(Constants.SKIER_DIRECTIONS.CRASH);

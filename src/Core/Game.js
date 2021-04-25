@@ -87,7 +87,7 @@ export class Game {
             this.gameIsPaused = !this.gameIsPaused;
             this.skier.pause(this.gameIsPaused);
             this.rhino.pause(this.gameIsPaused);
-            
+
             if (this.gameIsPaused) {
                 createSplash(true);
                 return;

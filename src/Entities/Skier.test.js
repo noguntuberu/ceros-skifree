@@ -9,8 +9,8 @@ beforeEach(() => {
     Entity.mockClear();
 });
 
-it('updateAsset does not return undefined even for non-existent directions: ', () => {
+it('updateAsset does not return undefined: ', () => {
     const skier = new Skier(0, 0);
-    skier.setDirection(9);
+    skier.getAssetName.mockReturnValue(skier.assetName);
     expect(skier.getAssetName()).toBeDefined();
 });
