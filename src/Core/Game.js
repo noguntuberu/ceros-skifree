@@ -47,7 +47,7 @@ export class Game {
                     if (isCaught) {
                         this.skier.setIsCaught();
                         this.gameIsOver = true;
-                        createSplash();
+                        createSplashScreen();
                     }
                 });
             }, 2000)
