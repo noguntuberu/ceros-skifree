@@ -100,10 +100,13 @@ We are looking forward to see what you come up with!
 * Added Rhino character
 * Added ramp and in-motion jump capability
 
+* Test URI: https://ceros-skifree.netlify.app
+
 **COMMENTS**
 * I observed that the unxpected blizzard after a crash occurred when the skier's direction was outside the specified directions. To fix this issue, I simply used the last known assetName whenever the skier's direction was out of bounds.
 * I also observed that the game occassionaly crashed on canvas update. Upon inspection, I discovered that the Game's updateGameWindow() method attempts to draw with null values. Because this issue usually dsappeared after refresh, I simply caught errors in a try... catch block and rerender on error.
 * To implement game pause, resume, and retry functionalities, I added a few properties and methods to the Game, Skier, Rhino classes.
 * I added the Rhino Character by creating a Rhino class which inherits the Entity class. I also halved the Rhino's speed to allow the skier get away from the Rhino.
+* Due to the fact that img files are only imported into the application at runtime, I extended the build script to copy the /img directory into the ./dist directory.
 
 *Note: I haven't played this game prior to this task and had to play a few online versions. Therefore, most of my assumptions were made based off the versions I played. Thanks. 
