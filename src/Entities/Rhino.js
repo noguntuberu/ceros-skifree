@@ -52,8 +52,7 @@ export class Rhino extends Entity {
         let { x, y } = this.skier.getPosition();
         if (!this.skierIsCaught && this.checkIfSkierIsCaught({ x, y }, assetManager)) {
             this.skierIsCaught = true;
-            this.eatSkier()
-            return true;
+            return this.eatSkier().then(() => true);
         }
 
         if (this.x === x && this.y < y) {
