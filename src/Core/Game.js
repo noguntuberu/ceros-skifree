@@ -88,6 +88,7 @@ export class Game {
         if (this.gameIsOver) return;
 
         if (event.which === Constants.KEYS.PAUSE) {
+            // handle space bar keydown event
             this.gameIsPaused = !this.gameIsPaused;
             this.skier.pause(this.gameIsPaused);
             this.rhino.pause(this.gameIsPaused);
